@@ -1,0 +1,70 @@
+# Ambiente Python
+*/__pycache__/
+__pycache__
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+env/
+venv/
+.venv/
+*.env
+*.env.*
+.venv
+
+# Logs
+*.log
+*.out
+*.err
+
+# Migrations
+migrations/
+
+# Configurações do IDE
+.vscode/
+.idea/
+
+# Dependências
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Bancos de dados locais
+*.sqlite3
+*.db
+
+# Arquivos temporários
+tmp/
+temp/
+*.swp
+*.swo
+
+# Arquivos de compilação
+*.o
+*.so
+*.a
+
+# Arquivos de cache
+.cache/
+.pip-cache/
+.pytest_cache/
+*.pytest_cache/
+
+# Arquivos de testes
+.coverage
+coverage.xml
+nosetests.xml
+test-reports/
+
+# Docker
+docker-compose.override.yml
+docker-compose.local.yml
+
+# Outros
+*.DS_Store
+*.thumbsdb
+*.bak
+*.orig
+*.rej
