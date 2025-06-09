@@ -6,7 +6,7 @@ from config.config import Config
 from controllers import author_controller, book_controller, genre_controller, publisher_controller, user_book_controller, user_controller, week_recomendation_controller
 from services.user_service import UserService
 from flask_cors import CORS
-
+from controllers import health_controller
 
 user = UserService()
 
@@ -34,6 +34,7 @@ def create_app():
     api.add_namespace(genre_controller.api, path='/genres')
     api.add_namespace(user_book_controller.api, path='/userbooks')
     api.add_namespace(week_recomendation_controller.api, path='/weekrecomendation')
+    api.add_namespace(health_controller.api, path='/health')
     # @app.before_request
     # def handle_options():
     #     if request.method == 'OPTIONS':
