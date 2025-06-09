@@ -25,6 +25,7 @@ jobs:
         pip install -r requirements.txt
         pip install behave
 
-    - name: Run Behave tests
+    - name: Run behave tests
       run: |
+        cd src
         behave
