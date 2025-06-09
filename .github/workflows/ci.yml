@@ -35,4 +35,6 @@ jobs:
       run: |
         cd src
         behave
-
+    - name: Run unit tests
+      run: |
+        pytest
