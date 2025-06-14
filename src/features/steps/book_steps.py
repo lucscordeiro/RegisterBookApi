@@ -81,37 +81,3 @@ def step_impl(context, book_id):
 def step_impl(context):
     assert context.response.status_code == 204
 
-@given('que um livro com título "{title}" está cadastrado')
-def step_impl(context, title):
-    payload = {
-        "title": title,
-        "publisher_id": 1,
-        "cover_image": "http://example.com/capa.jpg",
-        "author_id": 1,
-        "synopsis": "Sinopse para teste"
-    }
-    response = requests.post(f"{BASE_URL}/books", json=payload)
-    print("Resposta cadastro livro:", response.status_code, response.json())
-    assert response.status_code == 201
-    context.book_id = response.json().get("book", {}).get("book_id")
-
-@when('eu busco livros com título contendo "{title_part}"')
-def step_impl(context, title_part):
-    response = requests.get(f"{BASE_URL}/books/search", params={"title": title_part})
-    context.response = response
-
-@then('a API deve retornar uma lista de livros com status 200')
-def step_impl(context):
-    assert context.response.status_code == 200
-    data = context.response.json()
-    assert "books" in data
-
-@then('pelo menos um livro deve conter "{title_part}" no título')
-def step_impl(context, title_part):
-    data = context.response.json()
-    livros = data.get("books", [])
-    print("Livros retornados:", livros)
-    if not livros:
-        print("Resposta completa:", context.response.text)
-    print("Livros retornados:", livros)
-    assert any(title_part.lower() in livro["title"].lower() for livro in livros)
