@@ -47,9 +47,9 @@ def step_impl(context):
     response = requests.post(f"{BASE_URL}/books", json=payload)
     context.response = response
 
-# @then('devo receber uma resposta de erro com status 400')
-# def step_impl(context):
-#     assert context.response.status_code == 400, f"Status esperado 400, retornado {context.response.status_code}"
+@then('devo receber uma resposta de erro com status 400')
+def step_impl(context):
+    assert context.response.status_code == 400, f"Status esperado 400, retornado {context.response.status_code}"
 
 
 #ATUALIZAR LIVRO
