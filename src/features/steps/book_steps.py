@@ -46,7 +46,7 @@ def step_impl(context):
     }
     response = requests.post(f"{BASE_URL}/books", json=payload)
     context.response = response
-    
+
 @then('devo receber uma resposta de erro com status 400')
 def step_impl(context):
     assert context.response.status_code == 400, f"Status esperado 400, retornado {context.response.status_code}"
@@ -90,6 +90,11 @@ def step_impl(context, expected_title):
     print("Resposta da API:", data)
     assert "book" in data
     assert data["book"]["title"] == expected_title
+
+#BUSCAR LIVRO COM ID INEXISTENTE
+@then('devo receber uma resposta de erro com status 404')
+def step_impl(context):
+    assert context.response.status_code == 404, f"Status esperado 404, retornado {context.response.status_code}"
 
 #DELETAR LIVRO
 @when('eu deleto o livro com id "{book_id}"')
