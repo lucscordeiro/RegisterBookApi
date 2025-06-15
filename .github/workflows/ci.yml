@@ -11,40 +11,40 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Python 3.12
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.12'
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install behave
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install behave
 
-    - name: Run app in background
-      run: |
-        cd src
-        nohup python3 app.py &
-        sleep 5
+      - name: Run app in background
+        run: |
+          cd src
+          nohup python3 app.py &
+          sleep 5
 
-    - name: Run behave tests
-      run: |
-        cd src
-        behave
+      - name: Run behave tests
+        run: |
+          cd src
+          behave
 
-    - name: Run unit tests with coverage
-      run: |
-        pytest --cov=src --cov-report=term-missing --cov-report=xml
+      - name: Run unit tests with coverage
+        run: |
+          pytest --cov=src --cov-report=term-missing --cov-report=xml
 
-    - name: Upload coverage report
-      uses: actions/upload-artifact@v3
-      with:
-        name: coverage-report
-        path: coverage.xml
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage.xml
 
   approval:
     needs: build-and-test
@@ -53,20 +53,18 @@ jobs:
       name: approval
 
   notify:
-  needs: approval
-  runs-on: ubuntu-latest
-  steps:
-    - name: Send email notification
-      uses: dawidd6/action-send-mail@v3
-      with:
-        server_address: smtp.gmail.com
-        server_port: 465
-        username: lucas.cordeiro@aluno.ifsp.edu.br   # corrige aqui
-        password: ${{ secrets.EMAIL_PASSWORD }}
-        secure: true
-        from: lucas.cordeiro@aluno.ifsp.edu.br
-        to: lucas.cordeiro@aluno.ifsp.edu.br
-        subject: 'CI RegisterBookApi - Pipeline concluído com sucesso'
-        body: 'O pipeline do RegisterBookApi foi concluído e aprovado com sucesso.'
-
-
+    needs: approval
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send email notification
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: lucas.cordeiro@aluno.ifsp.edu.br
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          secure: true
+          from: lucas.cordeiro@aluno.ifsp.edu.br
+          to: lucas.cordeiro@aluno.ifsp.edu.br
+          subject: 'CI RegisterBookApi - Pipeline concluído com sucesso'
+          body: 'O pipeline do RegisterBookApi foi concluído e aprovado com sucesso.'
