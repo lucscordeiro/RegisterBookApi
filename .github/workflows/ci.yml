@@ -51,6 +51,9 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: approval
+    steps:
+      - name: Waiting for approval
+        run: echo "Aguardando aprovação manual no ambiente 'approval'..."
 
   notify:
     needs: approval
