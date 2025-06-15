@@ -34,6 +34,24 @@ def step_impl(context, title, publisher_id, cover_image, author_id, synopsis):
     context.response = response
     context.book_id = response.json().get("book", {}).get("book_id")
 
+#CADASTRO INVÁLIDO DE LIVRO
+@when('eu tento cadastrar um livro com dados inválidos faltando o campo "title"')
+def step_impl(context):
+    payload = {
+        # "title": "deve estar ausente",
+        "publisher_id": 1,
+        "cover_image": "http://example.com/capa.jpg",
+        "author_id": 1,
+        "synopsis": "Livro sem título"
+    }
+    response = requests.post(f"{BASE_URL}/books", json=payload)
+    context.response = response
+    
+@then('devo receber uma resposta de erro com status 400')
+def step_impl(context):
+    assert context.response.status_code == 400, f"Status esperado 400, retornado {context.response.status_code}"
+
+
 #ATUALIZAR LIVRO
 @when('eu atualizo a sinopse do livro para "{new_synopsis}"')
 def step_impl(context, new_synopsis):
