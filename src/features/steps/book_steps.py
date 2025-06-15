@@ -74,6 +74,13 @@ def step_impl(context, expected_synopsis):
     data = context.response.json()
     assert data["book"]["synopsis"] == expected_synopsis
 
+#ATUALIZAR LIVRO ID INEXISTENTE
+@when('eu tento atualizar o livro com id "{book_id}" com a nova sinopse "{new_synopsis}"')
+def step_impl(context, book_id, new_synopsis):
+    payload = {"synopsis": new_synopsis}
+    response = requests.put(f"{BASE_URL}/books/{book_id}", json=payload)
+    context.response = response
+
 #BUSCAR LIVRO POR ID
 @when('eu busco o livro com id "{book_id}"')
 def step_impl(context, book_id):
