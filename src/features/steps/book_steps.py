@@ -20,7 +20,7 @@ def step_impl(context):
     assert resp.status_code == 201
     context.book_id = resp.json().get("book", {}).get("book_id")
 
-
+#CADASTRAR LIVRO
 @when('eu cadastro um livro com título "{title}", publisher_id "{publisher_id}", cover_image "{cover_image}", author_id "{author_id}", e sinopse "{synopsis}"')
 def step_impl(context, title, publisher_id, cover_image, author_id, synopsis):
     payload = {
@@ -34,6 +34,7 @@ def step_impl(context, title, publisher_id, cover_image, author_id, synopsis):
     context.response = response
     context.book_id = response.json().get("book", {}).get("book_id")
 
+#ATUALIZAR LIVRO
 @when('eu atualizo a sinopse do livro para "{new_synopsis}"')
 def step_impl(context, new_synopsis):
     # Usa o book_id do contexto, que precisa existir (ex: criado no Given)
@@ -55,7 +56,7 @@ def step_impl(context, expected_synopsis):
     data = context.response.json()
     assert data["book"]["synopsis"] == expected_synopsis
 
-
+#BUSCAR LIVRO POR ID
 @when('eu busco o livro com id "{book_id}"')
 def step_impl(context, book_id):
     response = requests.get(f"{BASE_URL}/books/{book_id}")
@@ -72,6 +73,7 @@ def step_impl(context, expected_title):
     assert "book" in data
     assert data["book"]["title"] == expected_title
 
+#DELETAR LIVRO
 @when('eu deleto o livro com id "{book_id}"')
 def step_impl(context, book_id):
     response = requests.delete(f"{BASE_URL}/books/{book_id}")

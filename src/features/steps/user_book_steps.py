@@ -50,6 +50,7 @@ def step_impl(context):
     assert book_resp.status_code == 201, f"Erro ao criar livro: {book_resp.text}"
     context.book_id = book_resp.json()["book"]["book_id"]
 
+#ADICIONAR LIVRO A LISTA DO USUÁRIO
 @when('eu adiciono o livro com id "{book_id}" para o usuário com id "{user_id}" com progresso "{progress}", nota "{rating}", anotações "{notes}" e favorito "{favorite}"')
 def step_impl(context, book_id, user_id, progress, rating, notes, favorite):
     payload = {
