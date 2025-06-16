@@ -68,6 +68,7 @@ def test_update_book(test_app, setup_entities):
 
 def test_delete_book(test_app, setup_entities):
     with test_app.app_context():
+        
         book = BookService.create_book(
             title="Livro Excluído",
             publisher_id=setup_entities['publisher'].publisher_id,
