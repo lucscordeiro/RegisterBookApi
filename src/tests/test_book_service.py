@@ -53,6 +53,7 @@ def test_get_book_by_id(test_app, setup_entities):
         assert result is not None
         assert result.title == "Livro Buscado"
 
+
 def test_update_book(test_app, setup_entities):
     with test_app.app_context():
         book = BookService.create_book(
