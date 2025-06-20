@@ -128,8 +128,6 @@ def test_create_book_author_none(test_app, setup_entities):
 #     assert "failed to create book" in response.get_data(as_text=True).lower()
 
 
-
-
 def test_get_book_by_id(test_app, setup_entities):
     with test_app.app_context():
         book = BookService.create_book(
@@ -143,6 +141,15 @@ def test_get_book_by_id(test_app, setup_entities):
         assert result is not None
         assert result.title == "Livro Buscado"
 
+def test_get_book_by_nonexistent_id(test_app):
+    with test_app.app_context():
+        result = BookService.get_book_by_id(999)  # ID que não existe no banco
+        assert result is None
+
+def test_get_book_by_negative_id(test_app):
+    with test_app.app_context():
+        result = BookService.get_book_by_id(-1)  # ID inválido
+        assert result is None
 
 def test_update_book(test_app, setup_entities):
     with test_app.app_context():
@@ -156,6 +163,14 @@ def test_update_book(test_app, setup_entities):
         updated = BookService.update_book(book.book_id, title="Livro Atualizado", synopsis="Nova sinopse")
         assert updated.title == "Livro Atualizado"
         assert updated.synopsis == "Nova sinopse"
+
+def test_update_none_existent_book(test_app):
+    with test_app.app_context():
+        nonexistent_id = 999  # ID que não existe no banco de dados
+        updated_book = BookService.update_book(nonexistent_id, title="Novo Livro")
+        
+        assert updated_book is None
+
 
 def test_delete_book(test_app, setup_entities):
     with test_app.app_context():
