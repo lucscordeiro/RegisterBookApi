@@ -186,6 +186,16 @@ def test_delete_book(test_app, setup_entities):
         assert result is True
         assert BookService.get_book_by_id(book.book_id) is None
 
+def test_delete_book_by_none_existent_id(test_app):
+    with test_app.app_context():
+        result = BookService.delete_book(999)  # ID que não existe no banco
+        assert result is None
+
+def test_delete_book_by_negative_id(test_app):
+    with test_app.app_context():
+        result = BookService.delete_book(-1)  # ID que não existe no banco
+        assert result is None
+
 def test_add_genre_to_book(test_app, setup_entities):
     with test_app.app_context():
         book = BookService.create_book(
