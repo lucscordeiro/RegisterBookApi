@@ -3,6 +3,7 @@ from app import create_app
 from extensions import db
 from models import Publisher, Author, Genre, BookGenre
 from services.book_service import BookService
+from sqlalchemy.exc import IntegrityError
 
 @pytest.fixture(scope='function')
 def test_app():
@@ -39,6 +40,95 @@ def test_create_book_success(test_app, setup_entities):
         )
         assert book is not None
         assert book.title == "Livro de Teste"
+
+def test_create_book_title_none(test_app, setup_entities):
+    client = test_app.test_client()
+
+    response = client.post("/books/", json={
+        "title": None,
+        "publisher_id": setup_entities['publisher'].publisher_id,
+        "cover_image": "imagem.jpg",
+        "author_id": setup_entities['author'].author_id,
+        "synopsis": "Uma sinopse qualquer"
+    })
+
+    print(f"Status code: {response.status_code}")
+    print(f"Response JSON: {response.get_data(as_text=True)}")
+
+    assert response.status_code == 400
+    assert "failed to create book" in response.get_data(as_text=True).lower()
+
+
+def test_create_book_publisher_none(test_app, setup_entities):
+    client = test_app.test_client()
+
+    response = client.post("/books/", json={
+        "title": "Livro de Teste",
+        "publisher_id": None,
+        "cover_image": "imagem.jpg",
+        "author_id": setup_entities['author'].author_id,
+        "synopsis": "Uma sinopse qualquer"
+    })
+
+    print(f"Status code: {response.status_code}")
+    print(f"Response JSON: {response.get_data(as_text=True)}")
+
+    assert response.status_code == 400
+    assert "failed to create book" in response.get_data(as_text=True).lower()
+
+def test_create_book_author_none(test_app, setup_entities):
+    client = test_app.test_client()
+
+    response = client.post("/books/", json={
+        "title": "Livro de Teste",
+        "publisher_id": setup_entities['publisher'].publisher_id,
+        "cover_image": "imagem.jpg",
+        "author_id": None,
+        "synopsis": "Uma sinopse qualquer"
+    })
+
+    print(f"Status code: {response.status_code}")
+    print(f"Response JSON: {response.get_data(as_text=True)}")
+
+    assert response.status_code == 400
+    assert "failed to create book" in response.get_data(as_text=True).lower()
+
+# def test_create_book_author_none(test_app, setup_entities):
+#     client = test_app.test_client()
+
+#     response = client.post("/books/", json={
+#         "title": "Livro de Teste",
+#         "publisher_id": setup_entities['publisher'].publisher_id,
+#         "cover_image": "imagem.jpg",
+#         "author_id": setup_entities['author'].author_id,
+#         "synopsis": None
+#     })
+
+#     print(f"Status code: {response.status_code}")
+#     print(f"Response JSON: {response.get_data(as_text=True)}")
+
+#     assert response.status_code == 400
+#     assert "failed to create book" in response.get_data(as_text=True).lower()
+
+# def test_create_book_cover_image_none(test_app, setup_entities):
+#     client = test_app.test_client()
+
+#     response = client.post("/books/", json={
+#         "title": "Livro de Teste",
+#         "publisher_id": setup_entities['publisher'].publisher_id,
+#         "cover_image": None,
+#         "author_id": setup_entities['author'].author_id,
+#         "synopsis": "Uma sinopse qualquer"
+#     })
+
+#     print(f"Status code: {response.status_code}")
+#     print(f"Response JSON: {response.get_data(as_text=True)}")
+
+#     assert response.status_code == 400
+#     assert "failed to create book" in response.get_data(as_text=True).lower()
+
+
+
 
 def test_get_book_by_id(test_app, setup_entities):
     with test_app.app_context():
