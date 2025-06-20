@@ -44,6 +44,39 @@ def test_create_user_missing_fields(setup_database):
             password=""
         )
 
+def test_create_user_first_name_empty(setup_database):
+    with pytest.raises(ValueError):
+        UserService.create_user(
+            first_name="",
+            last_name="Sobrenome",
+            nickname="apelido",
+            cpf="12345678900",
+            phone_number="11999999999",
+            password="senha123"
+        )
+
+def test_create_user_last_name_empty(setup_database):
+    with pytest.raises(ValueError):
+        UserService.create_user(
+            first_name="Nome",
+            last_name="",
+            nickname="apelido",
+            cpf="12345678900",
+            phone_number="11999999999",
+            password="senha123"
+        )
+
+def test_create_user_nickname_empty(setup_database):
+    with pytest.raises(ValueError):
+        UserService.create_user(
+            first_name="Nome",
+            last_name="Sobrenome",
+            nickname="",
+            cpf="12345678900",
+            phone_number="11999999999",
+            password="senha123"
+        )
+
 def test_create_user_duplicate_cpf_or_nickname(setup_database):
     UserService.create_user(
         first_name="Lucas",
