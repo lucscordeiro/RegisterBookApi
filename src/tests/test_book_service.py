@@ -209,6 +209,8 @@ def test_add_genre_to_book(test_app, setup_entities):
         assert result is True
 
 def test_get_books_by_title(test_app, setup_entities):
+
+    
     with test_app.app_context():
         BookService.create_book(
             title="Livro Python",
